@@ -1,0 +1,14 @@
+{
+    "name": "lineParallax",
+    "version": "0.5",
+    "desc": "视差组件（动画组件）",
+    "cover": "",
+    "tag":"parallax",
+    "author": {
+        "name": "mingzheng",
+        "email": "polazeyu@taobao.com",
+        "page": "https://github.com/mingzheng"
+    },
+    "type": "kissy-gallery",
+    "type-url": "http://gallery.kissyui.com/guide"
+}
