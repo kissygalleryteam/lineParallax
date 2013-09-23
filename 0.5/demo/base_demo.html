@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>lineParallax 的 demo （基础） </title>
+    <script src="http://g.tbcdn.cn/kissy/k/1.3.0/kissy-min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="http://g.tbcdn.cn/kissy/k/1.3.0/css/dpl/base-min.css">
+    <style type="text/css">
+        body{
+            height: 10000px;
+        }
+        h2{
+            margin-top: -45px;
+        }
+        .viewbox{
+            position: fixed;
+            margin-top: 54px;
+            width: 100%;
+        }
+        .box{
+            top:0;
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: gray;
+            opacity: 0.3;
+        }
+        .use-anim{
+            position: absolute;
+            right: 93px;
+        }
+
+        .process{
+            width: 700px;
+            border: 1px solid;
+            position: absolute;
+            top: -30px;
+            left: 327px;
+        }
+
+        .sliding-block{
+            position: absolute;
+            height: 20px;
+            top: -10px;
+            background: red;
+            left: 0;
+            width: 2px;
+        }
+
+        .stamp{
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            left: 350px;
+            background: green;
+        }
+
+    </style>
+</head>
+<body>
+<div class="viewbox">
+    <h2>lineParallax的demo（滚一下看看）</h2>
+
+    <div class="box_1 box"></div>
+    <div class="box_2 box"></div>
+    <div class="box_3 box"></div>
+    <div class="box_4 box"></div>
+    <div class="box_5 box"></div>
+    <div class="box_6 box"></div>
+    <div class="use-anim">
+        <p>
+        <h3>使用line.addHook方法</h3>
+        看见轴上那条绿色的东西了吗，<br>我给line添加了一个在中点 （900） 的 hook ，<br>让其在 【游标】从不同方向经过的时候，做出不同的动作
+        </p>
+        <p>
+        <h3>使用line.anim方法</h3>
+        请输入数字0~1800，然后点击 anim <br>
+        （超出不违法规则，不过会无效，因为那部分轴上没有没挂载动画）<br>
+        默认配置为 duration:1000,easing:'linear'<br>
+        (参数和 kissy 的 animate 一样)<br>
+
+        </p>
+
+        <input id="anim-num" type="text"/>
+        <button class="anim-btn" >anim</button>
+        <br><br>
+        <strong>详细说明请看文档</strong>
+    </div>
+
+
+    <div class="process">
+        <div class="sliding-block"></div>
+        <div class="stamp"></div>
+    </div>
+
+</div>
+
+
+<script>
+var S = KISSY;
+//KISSY.Config.debug = true;
+if (S.Config.debug) {
+    var srcPath = "../../../";
+    S.config({
+        packages:[
+            {
+                name:"gallery",
+                path:srcPath,
+                charset:"utf-8",
+                ignorePackageNameInUri:true
+            }
+        ]
+    });
+}
+
+
+
+
+S.use('gallery/lineParallax/0.5/index', function (S, LineParallax) {
+    var line= new LineParallax();
+
+    window.onscroll = function(){
+        line.move(parseInt(document.body.scrollTop)*0.2);
+
+        S.one('#anim-num').val(line.getIndex());
+    }
+
+    S.one('.anim-btn').on('click',function(e){
+        var moveNum = parseInt(S.one('#anim-num').val());
+
+        line.anim(moveNum)
+    })
+
+    // 添加钩子
+    line.addHook([900],function(triger, direction, start, end){
+        if(direction > 0){
+            S.one('.stamp').css({
+                height:'50px',
+                width:'5px'
+            });
+        }else{
+            S.one('.stamp').css({
+                height:'2px',
+                width:'2px'
+            });
+        }
+
+    });
+
+
+    line.add({
+        dom:'.box_1',
+        regions:[{
+            start:0,
+            end:600,
+            startCss:{
+                left:0
+
+            },endCss:{
+                left:500
+
+            }
+        },{
+            start:1200,
+            end:1800,
+            startCss:{
+                top:0,
+                backgroundColor:'#666',
+                opacity:0.3
+            },
+            endCss:{
+                top:500,
+                backgroundColor:'#ff5500',
+                opacity:1
+            }
+        }]
+    });
+
+
+    line.add({
+        dom:'.box_2',
+        regions:[{
+            start:300,
+            end:1200,
+            startCss:{
+                left:0
+
+            },endCss:{
+                left:300
+
+            }
+        },{
+            start:1200,
+            end:1800,
+            startCss:{
+                top:0,
+                backgroundColor:'#666',
+                opacity:0.3
+            },
+            endCss:{
+                top:500,
+                backgroundColor:'#0063dc',
+                opacity:1
+            }
+        }]
+    });
+
+
+
+    line.add({
+        dom:'.box_3',
+        regions:[{
+            start:1200,
+            end:1500,
+            startCss:{
+                left:0,
+                backgroundColor:'#0063dc',
+                opacity:0.3
+
+            },endCss:{
+                left:700,
+                backgroundColor:'#01a652',
+                opacity:1
+
+            }
+        },{
+            start:1500,
+            end:1800,
+            startCss:{
+                top:250
+            },
+            endCss:{
+                top:500
+            }
+        }]
+    });
+
+
+    line.add({
+        dom:'.box_4',
+        regions:[{
+            start:1200,
+            end:1500,
+            startCss:{
+                left:0
+
+            },endCss:{
+                left:100
+
+            }
+        },{
+            start:1500,
+            end:1800,
+            startCss:{
+                top:250
+            },
+            endCss:{
+                top:500
+            }
+        }]
+    });
+
+    line.add({
+        dom:'.box_5',
+        regions:[{
+            start:0,
+            end:450,
+            startCss:{
+                left:0
+
+            },endCss:{
+                left:200
+
+            }
+        },{
+            start:450,
+            end:900,
+            startCss:{
+                top:0
+            },
+            endCss:{
+                top:200
+            }
+        },{
+            start:900,
+            end:1350,
+            startCss:{
+                left:200
+
+            },endCss:{
+                left:0
+
+            }
+        },{
+            start:1350,
+            end:1800,
+            startCss:{
+                top:200
+            },
+            endCss:{
+                top:0
+            }
+        }]
+    });
+
+
+
+    // 滑块的动作
+    line.add({
+        dom:'.sliding-block',
+        regions:[{
+            start:0,
+            end:1800,
+            startCss:{
+                left:0
+
+            },endCss:{
+                left:700
+
+            }
+        }]
+    });
+
+})
+</script>
+</body>
+</html>
