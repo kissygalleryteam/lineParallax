@@ -3,10 +3,10 @@
     "version": "0.5",
     "desc": "视差组件（动画组件）",
     "cover": "",
-    "tag":"parallax",
+    "tag":"视差,动画",
     "author": {
         "name": "mingzheng",
-        "email": "polazeyu@taobao.com",
+        "email": "polazeyu@qq.com",
         "page": "https://github.com/mingzheng"
     },
     "type": "kissy-gallery",
