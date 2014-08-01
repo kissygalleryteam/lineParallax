@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Background Demo</title>
+    <script src="http://g.tbcdn.cn/kissy/k/1.3.0/kissy-min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="http://g.tbcdn.cn/kissy/k/1.3.0/css/dpl/base-min.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: helvetica, arial;
+            zoom: 1;
+            position: relative;
+            left: 50%;
+            margin-left: -640px;
+            padding-bottom: 2000px;
+            margin-top: 600px;
+            /*top: 200px;*/
+        }
+        h1 {
+            background-color: black;
+            color: white;
+            height: 40px;
+            font-size: 24px;
+            font-weight: normal;
+            left: 0;
+            line-height: 40px;
+            position: fixed;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+        }
+        h1 a {
+            border-bottom: 1px solid white;
+            color: white;
+            display: inline-block;
+            line-height: 30px;
+            text-decoration: none;
+        }
+        .photo {
+
+
+            background-repeat: no-repeat;
+            height: 350px;
+            overflow: hidden;
+
+        }
+        .photo span {
+            bottom: 0;
+            color: white;
+            display: block;
+
+            font-size: 38px;
+            padding: 10px;
+            text-shadow: 0 2px 0 black, 0 0 10px black;
+            width: 1280px;
+            z-index: 10;
+            position: relative;
+        }
+        .summer,.summer-2 {
+            background-image: url(http://markdalgleish.com/projects/stellar.js/demos/images/summer.jpg);
+        }
+        .autumn,.autumn-2 {
+            background-image: url(http://markdalgleish.com/projects/stellar.js/demos/images/autumn.jpg);
+        }
+        .winter,.winter-2 {
+            background-image: url(http://markdalgleish.com/projects/stellar.js/demos/images/winter.jpg);
+        }
+        .spring ,.spring-2{
+            background-image: url(http://markdalgleish.com/projects/stellar.js/demos/images/spring.jpg);
+        }
+
+
+        .anim{
+            position: fixed;
+            top: 60px;
+            right: 103px;
+            background: #000;
+            opacity: 2.0.0;
+            border-radius: 10px;
+            height: 100px;
+            width: 200px;
+            font-size: 37px;
+            color: #fff;
+            text-align: center;
+            line-height: 100px;
+            cursor: pointer;
+
+        }
+
+        .declare{
+            position: absolute;
+            top: -167px;
+            left: 94px;
+        }
+        .declare h2{
+            font-size: 2.5em;
+        }
+        .declare p{
+            font-size: 1.5em;
+        }
+    </style>
+
+
+<body style="zoom: 1;">
+<!--<div class="viewport">-->
+<div class="declare">
+    <h2>视差进阶demo （背景 和 物体 的差异化动作）</h2>
+    <p>往下滚或者拖动滚动条看效果
+        <strong>
+            点击 【anim】 使用 anim 方法 代替 move 方法
+            （使用 anim 效果更加明显哦）
+        </strong>
+    </p>
+</div>
+
+
+<div class="photo summer" ><span>Summer</span></div>
+<div class="photo autumn"><span>Autumn</span></div>
+<div class="photo winter" ><span>Winter</span></div>
+<div class="photo spring"><span>Spring</span></div>
+<div class="photo summer-2" ><span>Summer</span></div>
+<div class="photo autumn-2" ><span>Autumn</span></div>
+<div class="photo winter-2" ><span>Winter</span></div>
+<div class="photo spring-2" ><span>Spring</span></div>
+<div class="anim">anim</div>
+<!--</div>-->
+
+<script >
+var S = KISSY;
+if (S.Config.debug) {
+    var srcPath = "../../../";
+    S.config({
+        packages:[
+            {
+                name:"kg",
+                path:srcPath,
+                charset:"utf-8",
+                ignorePackageNameInUri:true
+            }
+        ]
+    });
+}
+
+
+
+
+S.use('kg/lineParallax/2.0.0/index', function (S, LineParallax) {
+    S.ready(function(){
+        var line=new LineParallax();
+        var l=350;
+        var bgOffset=-250;
+
+        var spanStartPostion=-70;
+        var spanEndPostion=340;
+
+
+        window.onscroll=function(){
+
+            line.move(parseInt(document.body.scrollTop)-300);
+
+        }
+
+        S.one('.anim').on('click',function(){
+            // 使用 anim 代替 move
+            window.onscroll=function(){
+                line.anim(parseInt(document.body.scrollTop)-300,{
+                    duration:600
+                });
+
+            }
+        })
+
+
+        /*
+         四季图效果
+         */
+        line.add({
+            dom:'.summer',
+            regions:[
+                {
+                    start:0,
+                    end:l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.summer'),
+            regions:[
+                {
+                    start:0,
+                    end:l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+        line.add({
+            dom:'.autumn',
+            regions:[
+                {
+                    start:l,
+                    end:2*l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.autumn'),
+            regions:[
+                {
+                    start:l,
+                    end:2*l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+
+        line.add({
+            dom:'.winter',
+            regions:[
+                {
+                    start:2*l,
+                    end:3*l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.winter'),
+            regions:[
+                {
+                    start:2*l,
+                    end:3*l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+
+        line.add({
+            dom:'.spring',
+            regions:[
+                {
+                    start:3*l,
+                    end:4*l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.spring'),
+            regions:[
+                {
+                    start:3*l,
+                    end:4*l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+
+        line.add({
+            dom:'.summer-2',
+            regions:[
+                {
+                    start:4*l,
+                    end:5*l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.summer-2'),
+            regions:[
+                {
+                    start:4*l,
+                    end:5*l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+        line.add({
+            dom:'.autumn-2',
+            regions:[
+                {
+                    start:5*l,
+                    end:6*l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.autumn-2'),
+            regions:[
+                {
+                    start:5*l,
+                    end:6*l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+
+        line.add({
+            dom:'.winter-2',
+            regions:[
+                {
+                    start:6*l,
+                    end:7*l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.winter-2'),
+            regions:[
+                {
+                    start:6*l,
+                    end:7*l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+
+        line.add({
+            dom:'.spring-2',
+            regions:[
+                {
+                    start:7*l,
+                    end:8*l,
+                    startCss:{
+                        backgroundPositionY: 0
+                    },
+                    endCss:{
+                        backgroundPositionY:bgOffset
+                    }
+                }
+            ]
+        });
+        line.add({
+            dom: S.one('span','.spring-2'),
+            regions:[
+                {
+                    start:7*l,
+                    end:8*l,
+                    startCss:{
+                        top: spanStartPostion
+                    },
+                    endCss:{
+                        top:spanEndPostion
+                    }
+                }
+            ]
+        });
+
+
+    });
+
+
+});
+
+
+</script>
+
+</body>
